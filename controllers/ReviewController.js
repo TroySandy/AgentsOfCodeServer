@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const { Review } = require("../models");
 
+router.get("/practice", (req, res) => {
+  res.send("Hey!! This is a practice route!!")
+})
+
 /*
 =======================
   Get All Reviews
@@ -25,7 +29,7 @@ router.get("/", async (req, res) => {
   Get One Review
 =======================
 */
-router.get("/findmovie/:id", async (req, res) => {
+router.get("/onemovie/:id", async (req, res) => {
 
 
   try {
