@@ -1,10 +1,13 @@
 const router = require("express").Router();
 const { Review } = require("../models");
+
 const validateJWT = require("../middleware/validate-jwt");
+
 
 router.get("/", (req, res) => {
   res.send("Hello world.");
 });
+
 
 router.post("/", async (req, res) => {
   const { review: review, rating: rating, favorite: favorite, watched: watched, movie_id: movie_id, owner_id: owner_id} = req.body;
