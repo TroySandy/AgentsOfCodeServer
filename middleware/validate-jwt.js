@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const jwt = require("jsonwebtoken");
-const { UserModel } = require("../models");
+const { User } = require("../models");
 
 const validateJWT = async (req, res, next) => {
   if (req.method == "OPTIONS") {
@@ -22,12 +22,12 @@ const validateJWT = async (req, res, next) => {
         )
       : undefined;
 
-      // console.log("payload -->", payload);
+    // console.log("payload -->", payload);
     if (payload) {
-      let foundUser = await UserModel.findOne({ where: { id: payload.id } });
-        // console.log("found user -->", foundUser);
+      let foundUser = await User.findOne({ where: { id: payload.id } });
+      // console.log("found user -->", foundUser);
       if (foundUser) {
-          // console.log("request -->". req);
+        // console.log("request -->". req);
         req.user = foundUser;
         next();
       } else {
