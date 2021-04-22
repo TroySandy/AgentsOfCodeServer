@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
 }); 
 
 
-router.get("/", async (req, res) => {
+router.get("/movie", async (req, res) => {
   const {movie_id} = req.body;
   try {
     const reviewMovie = await Review.findAll({
