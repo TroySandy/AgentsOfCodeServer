@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
   }
 }); 
 
+
 router.get("/", async (req, res) => {
   const {movie_id} = req.body;
   try {
