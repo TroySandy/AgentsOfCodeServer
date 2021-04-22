@@ -6,38 +6,28 @@ router.get("/practice", (req, res) => {
   res.send("Hey!! This is a practice route!!")
 })
 
-/*
-=======================
-  Get All Reviews
-=======================
-*/
-
 router.get("/", async (req, res) => {
+  const {owner_id} = req.body;
   try {
-    const entries = await Review.findAll({
+    const reviewUser = await Review.findAll({
       where : {
         owner_id: owner_id
-      }
+      } 
     });
-    res.send(200).json(entries);
+    res.status(200).json(reviewUser);
   } catch (err) {
     res.status(500).json({ error: err})
   }
 }); 
 
-/*
-=======================
-  Get One Review
-=======================
-*/
-router.get("/onemovie/:id", async (req, res) => {
 
-
+router.get("/", async (req, res) => {
+  const {movie_id} = req.body;
   try {
-    const entries = await Review.findAll({
+    const reviewMovie = await Review.findAll({
       where: {movie_id: movie_id}
     });
-    res.send(200).json(entries);
+    res.status(200).json(reviewMovie);
   } catch (err) {
     res.status(500).json({ error: err })
   }
