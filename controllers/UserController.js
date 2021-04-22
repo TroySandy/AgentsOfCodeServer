@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { UniqueConstraintError } = require("sequelize/types");
+const { UniqueConstraintError } = require("sequelize");
 const { validateJWT } = require("../middleware");
 const { User } = require("../models");
 const bcrypt = require("bcryptjs");
@@ -9,7 +9,7 @@ router.get("/", validateJWT, (req, res) => {
   res.send("Hello world.");
 });
 
-router.get("/login", (req, res) => {
+router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -52,8 +52,10 @@ router.get("/login", (req, res) => {
   }
 });
 
-router.get("/register", (req, res) => {
+router.post("/register", (req, res) => {
   const { username, password, email, firstName, lastName } = req.body;
+
+  console.log(req.body);
 
   try {
     //validation
@@ -99,6 +101,7 @@ router.get("/register", (req, res) => {
         res.status(401).json({ message: "Something went wrong." });
       });
   } catch (error) {
+    //console.log(error);
     res.status(500).json({ error });
   }
 });
