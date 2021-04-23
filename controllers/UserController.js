@@ -6,7 +6,15 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 router.get("/", validateJWT, (req, res) => {
-  res.send("Hello world.");
+  res.status(200).json({
+    user: {
+      id: req.user.id,
+      email: req.user.email,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      username: req.user.username,
+    },
+  });
 });
 
 router.post("/login", (req, res) => {
@@ -32,14 +40,14 @@ router.post("/login", (req, res) => {
         } else {
           //invalid password
           res.status(401).json({
-            message: "Invalid username or password.",
+            error: "Invalid username or password.",
           });
         }
       })
       .catch((err) => {
         //invalid username
         res.status(401).json({
-          message: "Invalid username or password.",
+          error: "Invalid username or password.",
         });
       });
   } catch (error) {
