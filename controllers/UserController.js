@@ -5,11 +5,11 @@ const { User } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-router.get("/", validateJWT, (req, res) => {
+router.post("/", validateJWT, (req, res) => {
   res.send("Hello world.");
 });
 
-router.get("/login", (req, res) => {
+router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -52,7 +52,7 @@ router.get("/login", (req, res) => {
   }
 });
 
-router.get("/register", (req, res) => {
+router.post("/register", (req, res) => {
   const { username, password, email, firstName, lastName } = req.body;
 
   try {
