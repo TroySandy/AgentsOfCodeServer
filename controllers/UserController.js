@@ -17,6 +17,25 @@ router.get("/", validateJWT, (req, res) => {
   });
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    let user = await User.findByPk(req.params.id);
+
+    let { id, username, firstName, lastName } = user;
+
+    res.status(200).json({
+      id,
+      username,
+      firstName,
+      lastName,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
