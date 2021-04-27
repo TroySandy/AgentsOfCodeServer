@@ -29,11 +29,12 @@ router.post("/movie", async (req, res) => {
     });
     res.status(200).json(reviewMovie);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateJWT, async (req, res) => {
   const {
     review: review,
     rating: rating,
@@ -42,6 +43,12 @@ router.post("/", async (req, res) => {
     movie_id: movie_id,
     owner_id: owner_id,
   } = req.body;
+
+  if (req.user.id !== owner_id) {
+    return res.status(403).json({
+      message: "You cannot create an entry for another user.",
+    });
+  }
 
   console.log(review, rating, favorite, watched, movie_id, owner_id);
   try {
@@ -58,13 +65,14 @@ router.post("/", async (req, res) => {
       Reviews,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: `Failed to create entry ${err}`,
     });
   }
 });
 
-router.put("/", async (req, res) => {
+router.put("/", validateJWT, async (req, res) => {
   const { review, rating, favorite, watched, id } = req.body;
   try {
     await Review.update(
@@ -83,7 +91,7 @@ router.put("/", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/", validateJWT, async (req, res) => {
   const { id } = req.body;
   try {
     const query = {

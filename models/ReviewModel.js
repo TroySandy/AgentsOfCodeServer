@@ -7,7 +7,7 @@ const Review = db.define("review", {
     allowNull: true,
   },
   rating: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL,
     allowNull: true,
   },
   favorite: {
