@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { Review } = require("../models");
 const validateJWT = require("../middleware/validate-jwt");
+const { Op } = require("sequelize");
 
 router.get("/practice", (req, res) => {
   res.send("Hey!! This is a practice route!!");
@@ -34,22 +35,24 @@ router.post("/movie", async (req, res) => {
   }
 });
 
-router.post('/watched', async (req, res) => {
-  console.log('watchlist');
-  const {id} = req.body;
+router.post("/watched", validateJWT, async (req, res) => {
+  console.log("watchlist");
+  const { id } = req.body;
   try {
-    const watchedMovies = await Review.findAll(
-      {favorite: true, watched: false},
-      {where: {id: id}, returning: true})
+    const watchedMovies = await Review.findAll({
+      where: {
+        owner_id: req.user.id,
+        [Op.or]: [{ watched: true }, { favorite: true }],
+      },
+    });
     res.status(200).json(watchedMovies);
-  } catch(err){
+  } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err })
+    res.status(500).json({ error: err });
   }
+});
 
-})
-
-router.post('/similar',  async (req, res) => {
+router.post("/similar", async (req, res) => {
   const { movie_id } = req.body;
   try {
     const reviewMovie = await Review.findAll({
@@ -60,7 +63,7 @@ router.post('/similar',  async (req, res) => {
     console.log(err);
     res.status(500).json({ error: err });
   }
-})
+});
 
 router.post("/", validateJWT, async (req, res) => {
   const {
