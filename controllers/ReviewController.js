@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/movie", async (req, res) => {
+router.post("/movie", validateJWT, async (req, res) => {
   console.log("test");
   const { movie_id } = req.body;
   try {
@@ -34,7 +34,7 @@ router.post("/movie", async (req, res) => {
   }
 });
 
-router.post('/watched', async (req, res) => {
+router.post('/watched', validateJWT, async (req, res) => {
   console.log('watchlist');
   const {id} = req.body;
   try {
