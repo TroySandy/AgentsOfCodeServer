@@ -34,6 +34,34 @@ router.post("/movie", async (req, res) => {
   }
 });
 
+router.post('/watched', async (req, res) => {
+  console.log('watchlist');
+  const {id} = req.body;
+  try {
+    const watchedMovies = await Review.findAll(
+      {favorite: true, watched: false},
+      {where: {id: id}, returning: true})
+    res.status(200).json(watchedMovies);
+  } catch(err){
+    console.log(err);
+    res.status(500).json({ error: err })
+  }
+
+})
+
+router.post('/similar',  async (req, res) => {
+  const { movie_id } = req.body;
+  try {
+    const reviewMovie = await Review.findAll({
+      where: { movie_id: movie_id },
+    });
+    res.status(200).json(reviewMovie);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+})
+
 router.post("/", validateJWT, async (req, res) => {
   const {
     review: review,
