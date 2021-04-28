@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/movie", validateJWT, async (req, res) => {
+router.post("/movie",  async (req, res) => {
   console.log("test");
   const { movie_id } = req.body;
   try {
