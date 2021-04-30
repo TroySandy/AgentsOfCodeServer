@@ -1,15 +1,42 @@
 const router = require("express").Router();
-const { UniqueConstraintError } = require("sequelize/types");
+const { UniqueConstraintError } = require("sequelize");
 const { validateJWT } = require("../middleware");
 const { User } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 router.get("/", validateJWT, (req, res) => {
-  res.send("Hello world.");
+  res.status(200).json({
+    user: {
+      id: req.user.id,
+      email: req.user.email,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      username: req.user.username,
+    },
+  });
 });
 
-router.get("/login", (req, res) => {
+router.get("/:id", async (req, res) => {
+  try {
+    let user = await User.findByPk(req.params.id);
+
+    let { id, username, firstName, lastName } = user;
+
+    res.status(200).json({
+      id,
+      username,
+      firstName,
+      lastName,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+
+router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -32,14 +59,14 @@ router.get("/login", (req, res) => {
         } else {
           //invalid password
           res.status(401).json({
-            message: "Invalid username or password.",
+            error: "Invalid username or password.",
           });
         }
       })
       .catch((err) => {
         //invalid username
         res.status(401).json({
-          message: "Invalid username or password.",
+          error: "Invalid username or password.",
         });
       });
   } catch (error) {
@@ -52,8 +79,10 @@ router.get("/login", (req, res) => {
   }
 });
 
-router.get("/register", (req, res) => {
+router.post("/register", (req, res) => {
   const { username, password, email, firstName, lastName } = req.body;
+
+  console.log(req.body);
 
   try {
     //validation
@@ -99,6 +128,7 @@ router.get("/register", (req, res) => {
         res.status(401).json({ message: "Something went wrong." });
       });
   } catch (error) {
+    //console.log(error);
     res.status(500).json({ error });
   }
 });

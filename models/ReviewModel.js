@@ -7,7 +7,7 @@ const Review = db.define("review", {
     allowNull: true,
   },
   rating: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL,
     allowNull: true,
   },
   favorite: {
@@ -19,11 +19,11 @@ const Review = db.define("review", {
     allowNull: false,
   },
   movie_id: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   owner_id: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
 });
