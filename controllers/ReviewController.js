@@ -80,7 +80,7 @@ router.post("/", validateJWT, async (req, res) => {
       message: "You cannot create an entry for another user.",
     });
   }
-
+//Right here we are linking our review model to our review controller.  We are doing this to make sure that any information subnmitted to our database in in the same format and will be readable by the rest of our code logic.  
   console.log(review, rating, favorite, watched, movie_id, owner_id);
   try {
     const Reviews = await Review.create({
@@ -122,6 +122,7 @@ router.put("/", validateJWT, async (req, res) => {
   }
 });
 
+//below we are using the validateJWT function, to verify that ther person who is trying to delete a review is logged in with a valid token from our validate function and that the review they are deleting is theirs. 
 router.delete("/", validateJWT, async (req, res) => {
   const { id } = req.body;
   try {
